@@ -1,0 +1,19 @@
+{
+  "private": true,
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "start": "ndc-lambda-sdk host -f functions.ts serve --configuration ./",
+    "watch": "ndc-lambda-sdk host -f functions.ts --watch serve --configuration ./ --pretty-print-logs"
+  },
+  "dependencies": {
+    "@hasura/ndc-lambda-sdk": "1.11.0",
+    "@types/nodemailer": "^6.4.17",
+    "dotenv": "^16.4.7",
+    "nodemailer": "^6.10.0"
+  },
+  "devDependencies": {
+    "dotenv-cli": "^7.4.2"
+  }
+}

@@ -1,0 +1,60 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: TemplateData
+  fields:
+    - name: templateName
+      type: String!
+    - name: variables
+      type: String!
+  graphql:
+    typeName: TemplateData
+    inputTypeName: TemplateDataInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: mailer
+      dataConnectorObjectType: TemplateData
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: TemplateData
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - templateName
+          - variables
+
+---
+kind: Command
+version: v1
+definition:
+  name: SendTemplateEmail
+  outputType: EmailResult!
+  arguments:
+    - name: templateData
+      type: TemplateData!
+      description: Template name and variables
+    - name: to
+      type: String!
+      description: Email address of the recipient
+  source:
+    dataConnectorName: mailer
+    dataConnectorCommand:
+      procedure: sendTemplateEmail
+  graphql:
+    rootFieldName: sendTemplateEmail
+    rootFieldKind: Mutation
+  description: Sends a template-based email
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: SendTemplateEmail
+  permissions:
+    - role: admin
+      allowExecution: true
+

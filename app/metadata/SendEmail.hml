@@ -1,0 +1,98 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: EmailContent
+  fields:
+    - name: html
+      type: String
+    - name: subject
+      type: String!
+    - name: text
+      type: String
+  graphql:
+    typeName: EmailContent
+    inputTypeName: EmailContentInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: mailer
+      dataConnectorObjectType: EmailContent
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: EmailContent
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - html
+          - subject
+          - text
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: EmailResult
+  fields:
+    - name: message
+      type: String!
+    - name: messageId
+      type: String
+    - name: previewUrl
+      type: String
+    - name: success
+      type: Boolean!
+  graphql:
+    typeName: EmailResult
+    inputTypeName: EmailResultInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: mailer
+      dataConnectorObjectType: EmailResult
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: EmailResult
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - message
+          - messageId
+          - previewUrl
+          - success
+
+---
+kind: Command
+version: v1
+definition:
+  name: SendEmail
+  outputType: EmailResult!
+  arguments:
+    - name: content
+      type: EmailContent!
+      description: Email content including subject and body
+    - name: to
+      type: String!
+      description: Email address of the recipient
+  source:
+    dataConnectorName: mailer
+    dataConnectorCommand:
+      procedure: sendEmail
+  graphql:
+    rootFieldName: sendEmail
+    rootFieldKind: Mutation
+  description: Sends an email to a single recipient
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: SendEmail
+  permissions:
+    - role: admin
+      allowExecution: true
+

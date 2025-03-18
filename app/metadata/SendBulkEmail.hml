@@ -1,0 +1,31 @@
+---
+kind: Command
+version: v1
+definition:
+  name: SendBulkEmail
+  outputType: EmailResult!
+  arguments:
+    - name: content
+      type: EmailContent!
+      description: Email content including subject and body
+    - name: recipients
+      type: String!
+      description: Comma-separated list of email addresses
+  source:
+    dataConnectorName: mailer
+    dataConnectorCommand:
+      procedure: sendBulkEmail
+  graphql:
+    rootFieldName: sendBulkEmail
+    rootFieldKind: Mutation
+  description: Sends an email to multiple recipients
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: SendBulkEmail
+  permissions:
+    - role: admin
+      allowExecution: true
+

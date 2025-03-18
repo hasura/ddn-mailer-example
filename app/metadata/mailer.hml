@@ -1,0 +1,140 @@
+kind: DataConnectorLink
+version: v1
+definition:
+  name: mailer
+  url:
+    readWriteUrls:
+      read:
+        valueFromEnv: APP_MAILER_READ_URL
+      write:
+        valueFromEnv: APP_MAILER_WRITE_URL
+  headers:
+    Authorization:
+      valueFromEnv: APP_MAILER_AUTHORIZATION_HEADER
+  schema:
+    version: v0.1
+    schema:
+      scalar_types:
+        Boolean:
+          representation:
+            type: boolean
+          aggregate_functions: {}
+          comparison_operators:
+            _eq:
+              type: equal
+        String:
+          representation:
+            type: string
+          aggregate_functions: {}
+          comparison_operators:
+            _eq:
+              type: equal
+      object_types:
+        EmailContent:
+          fields:
+            html:
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: String
+            subject:
+              type:
+                type: named
+                name: String
+            text:
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: String
+        EmailResult:
+          fields:
+            message:
+              type:
+                type: named
+                name: String
+            messageId:
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: String
+            previewUrl:
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: String
+            success:
+              type:
+                type: named
+                name: Boolean
+        TemplateData:
+          fields:
+            templateName:
+              type:
+                type: named
+                name: String
+            variables:
+              type:
+                type: named
+                name: String
+      collections: []
+      functions: []
+      procedures:
+        - name: sendEmail
+          description: Sends an email to a single recipient
+          arguments:
+            content:
+              description: Email content including subject and body
+              type:
+                type: named
+                name: EmailContent
+            to:
+              description: Email address of the recipient
+              type:
+                type: named
+                name: String
+          result_type:
+            type: named
+            name: EmailResult
+        - name: sendBulkEmail
+          description: Sends an email to multiple recipients
+          arguments:
+            content:
+              description: Email content including subject and body
+              type:
+                type: named
+                name: EmailContent
+            recipients:
+              description: Comma-separated list of email addresses
+              type:
+                type: named
+                name: String
+          result_type:
+            type: named
+            name: EmailResult
+        - name: sendTemplateEmail
+          description: Sends a template-based email
+          arguments:
+            templateData:
+              description: Template name and variables
+              type:
+                type: named
+                name: TemplateData
+            to:
+              description: Email address of the recipient
+              type:
+                type: named
+                name: String
+          result_type:
+            type: named
+            name: EmailResult
+    capabilities:
+      version: 0.1.6
+      capabilities:
+        query:
+          variables: {}
+          nested_fields: {}
+        mutation: {}
