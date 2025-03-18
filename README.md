@@ -1,6 +1,12 @@
-# DDN Email Connector
+# DDN Email Example
 
-This connector provides email sending capabilities through Hasura DDN using nodemailer. It supports both development (using Ethereal) and production environments.
+This example provides email sending capabilities through Hasura DDN using nodemailer. It supports both development (using Ethereal) and production environments.
+
+
+
+https://github.com/user-attachments/assets/ad5335a8-187f-403b-85ba-19c2aa1d4b0d
+
+
 
 ## Setup
 
